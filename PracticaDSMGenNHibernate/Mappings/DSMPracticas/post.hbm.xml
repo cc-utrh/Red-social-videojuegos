@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8" ?>
+		<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+		                   assembly="PracticaDSMGenNHibernate"
+		                   namespace="PracticaDSMGenNHibernate.EN.DSMPracticas">
+		    
+		    
+			
+				<class name="PostEN" table="Post"> 
+				  	
+						<id name="Id" column="id" type="integer"> 
+							<generator class="hilo"/>
+						</id>
+			
+					
+					<property name="Contenido" type="string"> 
+						<column name="contenido" length="1000" not-null="true"/>
+					</property>
+					<property name="Categoria" > 
+						<column name="categoria"  not-null="true"/>
+					</property>
+					<property name="Titulo" type="string"> 
+						<column name="titulo"  not-null="true"/>
+					</property>
+					<property name="Imagen" type="string"> 
+						<column name="imagen"  not-null="true"/>
+					</property>
+					<property name="Hora" type="timestamp"> 
+						<column name="hora"  not-null="true"/>
+					</property>
+					<property name="Likes" type="integer"> 
+						<column name="likes"  not-null="true"/>
+					</property>
+			
+			
+			
+			
+		  			
+						<many-to-one name="UsuarioCreador" class="PracticaDSMGenNHibernate.EN.DSMPracticas.UsuarioEN" >	
+								<column name="FK_id_idUsuario"/> 
+						</many-to-one>
+											 					
+			
+		  			
+						<many-to-one name="Comunidad" class="PracticaDSMGenNHibernate.EN.DSMPracticas.ComunidadEN" >	
+								<column name="FK_id_idComunidad"/> 
+						</many-to-one>
+											 					
+			
+		  			
+						<bag name="Comentario" cascade="delete">
+							<key>
+							
+								
+								<column name="FK_id_idPost"/>
+					      	</key>
+							<one-to-many class="PracticaDSMGenNHibernate.EN.DSMPracticas.ComentarioEN"/>
+					    </bag>
+					
+			
+		  			
+						<bag name="Notificacion" >
+							<key>
+							
+								
+								<column name="FK_id_idPost"/>
+					      	</key>
+							<one-to-many class="PracticaDSMGenNHibernate.EN.DSMPracticas.NotificacionEN"/>
+					    </bag>
+					
+			
+			
+			
+			
+			
+			
+		  			
+						<bag name="UsuarioLiker" table="[post_0_usuario]"  >
+							<key>
+								
+									<column name="FK_id_idPostLiked"/> 
+							</key>
+      						<many-to-many class="PracticaDSMGenNHibernate.EN.DSMPracticas.UsuarioEN">
+									<column name="FK_id_idUsuarioLiker"/> 
+      						</many-to-many>
+    					</bag>
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+		
+		 </class>	
+		  
+		  <query name="PostENReadAllHQL">from PostEN</query>
+		  <query name="PostENgetPostsUsuHQL"><![CDATA[FROM PostEN as post WHERE post.UsuarioCreador.Id = :p_usu]]></query>
+		  <query name="PostENgetPostPorCategoriaHQL"><![CDATA[FROM PostEN as post WHERE post.Categoria = :p_categoria]]></query>
+		  <query name="PostENgetPostComunidadLikesHQL"><![CDATA[FROM PostEN as post WHERE post.Comunidad.Id = :p_comunidad ORDER BY post.Likes desc]]></query>
+		  <query name="PostENgetPostComunidadFechaHQL"><![CDATA[FROM PostEN as post WHERE post.Comunidad.Id = :p_comunidad ORDER BY post.Hora desc]]></query>
+		  <query name="PostENgetPostLikedHQL"><![CDATA[SELECT post FROM PostEN as post INNER JOIN post.UsuarioLiker as usuarioLiker WHERE usuarioLiker.Id = :p_usuario]]></query>
+		</hibernate-mapping>
+	

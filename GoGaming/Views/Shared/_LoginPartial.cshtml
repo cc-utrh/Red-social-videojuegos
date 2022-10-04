@@ -1,0 +1,27 @@
+﻿
+@using PracticaDSMGenNHibernate.EN.DSMPracticas
+@using Microsoft.AspNet.Identity
+
+
+@if (Session["Usuario"] != null)
+{
+    var usuario = (UsuarioEN)Session["Usuario"];
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+    @Html.AntiForgeryToken()
+
+    <ul class="nav navbar-nav navbar-right">
+        <li>
+            @Html.ActionLink("Hola, " + usuario.Nickname + "!", "../Usuario/Details", new { id = usuario.Id })
+        </li>
+        <li>@Html.ActionLink("Cerrar sesión", "../Usuario/Logout")</li>
+    </ul>
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li>@Html.ActionLink("Registrarse", "../Usuario/Register")</li>
+        <li>@Html.ActionLink("Iniciar sesión","../Usuario/Login")</li>
+    </ul>
+}

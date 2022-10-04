@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+		<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+		                   assembly="PracticaDSMGenNHibernate"
+		                   namespace="PracticaDSMGenNHibernate.EN.DSMPracticas">
+		    
+		    
+			
+				<class name="ComentarioEN" table="Comentario"> 
+				  	
+						<id name="Id" column="id" type="integer"> 
+							<generator class="hilo"/>
+						</id>
+			
+					
+					<property name="Contenido" type="string"> 
+						<column name="contenido" length="1000" not-null="true"/>
+					</property>
+					<property name="Hora" type="timestamp"> 
+						<column name="hora"  not-null="true"/>
+					</property>
+			
+			
+			
+			
+		  			
+						<many-to-one name="Usuario" class="PracticaDSMGenNHibernate.EN.DSMPracticas.UsuarioEN" >	
+								<column name="FK_id_idUsuario"/> 
+						</many-to-one>
+											 					
+			
+		  			
+						<many-to-one name="Post" class="PracticaDSMGenNHibernate.EN.DSMPracticas.PostEN" >	
+								<column name="FK_id_idPost"/> 
+						</many-to-one>
+											 					
+			
+		  			
+						<bag name="ComentariosHijos" cascade="delete">
+							<key>
+							
+								
+								<column name="FK_id_idComentario"/>
+					      	</key>
+							<one-to-many class="PracticaDSMGenNHibernate.EN.DSMPracticas.ComentarioEN"/>
+					    </bag>
+					
+			
+		  			
+						<many-to-one name="ComentarioPadre" class="PracticaDSMGenNHibernate.EN.DSMPracticas.ComentarioEN" >	
+								<column name="FK_id_idComentario"/> 
+						</many-to-one>
+											 					
+			
+					
+					
+					
+					
+					
+					
+					
+		
+		 </class>	
+		  
+		  <query name="ComentarioENReadAllHQL">from ComentarioEN</query>
+		  <query name="ComentarioENgetComentariosFechaHQL"><![CDATA[FROM ComentarioEN as coment WHERE coment.Post.Id = :p_post AND coment.ComentarioPadre IS EMPTY  ORDER BY coment.Hora desc]]></query>
+		  <query name="ComentarioENgetHijosFromComentarioHQL"><![CDATA[FROM ComentarioEN as coment WHERE coment.ComentarioPadre.Id = :p_comentario  ORDER BY coment.Hora desc]]></query>
+		</hibernate-mapping>
+	

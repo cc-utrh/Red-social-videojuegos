@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+		<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+		                   assembly="PracticaDSMGenNHibernate"
+		                   namespace="PracticaDSMGenNHibernate.EN.DSMPracticas">
+		    
+		    
+			
+				<class name="ComunidadEN" table="Comunidad"> 
+				  	
+						<id name="Id" column="id" type="integer"> 
+							<generator class="hilo"/>
+						</id>
+			
+					
+					<property name="Nombre" type="string"> 
+						<column name="attribute"  unique="true" not-null="true"/>
+					</property>
+					<property name="Descripcion" type="string"> 
+						<column name="descripcion" length="1000" not-null="true"/>
+					</property>
+					<property name="FechaCreacion" type="date"> 
+						<column name="fechaCreacion"  not-null="true"/>
+					</property>
+			
+			
+			
+			
+			
+		  			
+						<bag name="Usuario" table="[comunidad_usuario]"  >
+							<key>
+								
+									<column name="FK_id_idComunidad"/> 
+							</key>
+      						<many-to-many class="PracticaDSMGenNHibernate.EN.DSMPracticas.UsuarioEN">
+									<column name="FK_id_idUsuario"/> 
+      						</many-to-many>
+    					</bag>
+			
+		  			
+						<bag name="Post" cascade="delete">
+							<key>
+							
+								
+								<column name="FK_id_idComunidad"/>
+					      	</key>
+							<one-to-many class="PracticaDSMGenNHibernate.EN.DSMPracticas.PostEN"/>
+					    </bag>
+					
+			
+		  			
+					
+							   <one-to-one name="Juego" class="PracticaDSMGenNHibernate.EN.DSMPracticas.JuegoEN" property-ref="Comunidad" />							
+					 
+						
+			
+					
+					
+					
+					
+					
+					
+					
+		
+		 </class>	
+		  
+		  <query name="ComunidadENReadAllHQL">from ComunidadEN</query>
+		  <query name="ComunidadENgetComunidadesUsuarioHQL"><![CDATA[SELECT comunidades FROM ComunidadEN as comunidades INNER JOIN comunidades.Usuario as usuarios WHERE usuarios.Id = :p_usuario]]></query>
+		</hibernate-mapping>
+	

@@ -1,0 +1,90 @@
+﻿@model GoGaming.Models.JuegoViewModel
+
+@{
+    ViewBag.Title = "Borrar Juego";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Borrar Juego</h2>
+
+<div class="card w-50 jumbotron" style="background-color: #222222; margin-top: 3em;">
+
+    <h3 style="margin-top:10px">¿Estás seguro de que quieres borrar este juego?</h3>
+    <br />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Descripcion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Descripcion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Portada)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Portada)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Generos)
+        </dt>
+
+        <dd>
+            @{
+                var generos = Model.Generos;
+                var genNombres = (string[])ViewData["nombresGenero"];
+                var first = false;
+            }
+            <div>
+                @for (var i = 0; i < (int)ViewData["numGeneros"]; i++)
+                {
+                    if (generos[i] && i > 0)
+                    {
+                        if (!first)
+                        {
+                            @genNombres[i];
+                            first = true;
+                        }
+                        else
+                        {
+                            var aux = ", ";
+                            @aux;
+                            @genNombres[i];
+                        }
+                    }
+
+                }
+            </div>
+
+        </dd>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+
+                <div class="text-right">
+                    <input type="submit" value="Borrar" class="btn btn-primary stretched-link" />
+
+                </div>
+
+            </div>
+            @Html.ActionLink("Atrás", "Index")
+        }
+
+    </dl>
+
+    
+</div>

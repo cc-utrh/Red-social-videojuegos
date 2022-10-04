@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+		<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+		                   assembly="PracticaDSMGenNHibernate"
+		                   namespace="PracticaDSMGenNHibernate.EN.DSMPracticas">
+		    
+		    
+			
+				<class name="JuegoEN" table="Juego"> 
+				  	
+						<id name="Id" column="id" type="integer"> 
+							<generator class="hilo"/>
+						</id>
+			
+					
+					<property name="Nombre" type="string"> 
+						<column name="attribute"  unique="true" not-null="true"/>
+					</property>
+					<property name="Descripcion" type="string"> 
+						<column name="descripcion" length="1000" not-null="true"/>
+					</property>
+					<property name="Portada" type="string"> 
+						<column name="portada"  not-null="true"/>
+					</property>
+			
+			
+			
+			
+		  			
+						<bag name="Usuario" table="[juego_usuario]"  >
+							<key>
+								
+									<column name="FK_id_idJuego"/> 
+							</key>
+      						<many-to-many class="PracticaDSMGenNHibernate.EN.DSMPracticas.UsuarioEN">
+									<column name="FK_id_idUsuario"/> 
+      						</many-to-many>
+    					</bag>
+			
+		  			
+					
+							<many-to-one name="Comunidad" class="PracticaDSMGenNHibernate.EN.DSMPracticas.ComunidadEN" cascade="delete">
+								<column name="FK_id_idComunidad"/> 
+        					</many-to-one>
+					 
+						
+			
+			
+		  			
+						<bag name="Genero" table="[juego_genero]"  >
+							<key>
+								
+									<column name="FK_id_idJuego"/> 
+							</key>
+      						<many-to-many class="PracticaDSMGenNHibernate.EN.DSMPracticas.GeneroEN">
+									<column name="FK_id_idGenero"/> 
+      						</many-to-many>
+    					</bag>
+			
+					
+					
+					
+					
+					
+					
+					
+		
+		 </class>	
+		  
+		  <query name="JuegoENReadAllHQL">from JuegoEN</query>
+		  <query name="JuegoENbusquedaHQL"><![CDATA[FROM JuegoEN as juego WHERE juego.Nombre like CONCAT('%', :p_nombre, '%')]]></query>
+		  <query name="JuegoENgetJuegosPorUsuarioHQL"><![CDATA[SELECT juego FROM JuegoEN as juego INNER JOIN juego.Usuario as usu WHERE usu.Id = :p_usuario]]></query>
+		</hibernate-mapping>
+	

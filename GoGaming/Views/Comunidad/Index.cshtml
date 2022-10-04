@@ -1,0 +1,82 @@
+﻿@model IEnumerable<GoGaming.Models.ComunidadViewModel>
+@using PracticaDSMGenNHibernate.EN.DSMPracticas;
+
+@{
+    ViewBag.Title = "Comunidades";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    int idUsuario = -1;
+    if (Session["Usuario"] != null)
+    {
+        idUsuario = ((UsuarioEN)Session["Usuario"]).Id;
+    }
+}
+
+<h1>Comunidades recientes</h1>
+
+@foreach (var item in Model)
+{
+
+    <div class="card w-50 jumbotron" style="background-color: #222222; margin-top: 3em;">
+        @*<img class="card-img-top img-responsive center-block" src="@Html.DisplayFor(modelItem => item.Portada)" alt="Card image cap">*@
+        <div class="card-header text-muted"> @Html.DisplayFor(modelItem => item.NomJuego)</div>
+        <div class="card-body">
+            <h2 class="card-title"> @Html.DisplayFor(modelItem => item.Nombre)</h2>
+            <br />
+            <h4 class="card-text"> @Html.DisplayFor(modelItem => item.Descripcion)</h4>
+            <br />
+            <h6 class="card-subtitle mb-2 text-muted"> @Html.DisplayFor(modelItem => item.FechaCreacion)</h6>
+            <div class="text-right">
+                @Html.ActionLink("Visitar", "Details", new { id = item.CodigoComunidad }, new { @class = "btn btn-primary stretched-link ", role = "button" })
+            </div>
+            @if (idUsuario != -1 && ((UsuarioEN)Session["Usuario"]).Administrator)
+            {
+                @Html.ActionLink("Editar", "Edit", new { id = item.CodigoComunidad }) <span> | </span>
+                @Html.ActionLink("Borrar", "Delete", new { id = item.CodigoComunidad })
+            }
+        </div>
+    </div>
+}
+@*<br />
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NomJuego)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descripcion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaCreacion)
+            </th>
+
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NomJuego)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descripcion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FechaCreacion)
+                </td>
+                <td>
+                    @Html.ActionLink("Detalle", "Details", new { id = item.CodigoComunidad }) |
+                    @Html.ActionLink("Editar", "Edit", new { id = item.CodigoComunidad }) |
+                    @Html.ActionLink("Borrar", "Delete", new { id = item.CodigoComunidad })
+                </td>
+            </tr>
+        }
+
+    </table>*@
